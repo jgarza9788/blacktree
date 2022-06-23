@@ -44,7 +44,7 @@ def get_recycle_bin_link():
     return '::{645FF040-5081-101B-9F08-00AA002F954E}'
 
 def get_run_refresh(file):
-    return 'python ' + file
+    return 'python ' + file 
 
 def get_icon(path,icon_map):
     """returns an unicode icon from nerd fronts
@@ -111,13 +111,13 @@ def get_tree(path,sort_all=False):
 
         if sort_all:
             children =[]
-            children.extend([get_tree(os.path.join(root, d)) for d in dirs])
+            children.extend([get_tree(os.path.join(root, d),sort_all=sort_all) for d in dirs])
             children.extend([{"name":os.path.join(root, f), "type":"file"} for f in files])
             children.sort(key=sbn)
 
             tree["children"].extend(children)
         else:
-            tree["children"].extend([get_tree(os.path.join(root, d)) for d in dirs])
+            tree["children"].extend([get_tree(os.path.join(root, d),sort_all=sort_all) for d in dirs])
             tree["children"].extend([{"name":os.path.join(root, f), "type":"file"} for f in files])
 
         return tree

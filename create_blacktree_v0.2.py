@@ -1,6 +1,5 @@
 
 import os
-
 from numpy import True_
 # import sys
 from functions import *
@@ -22,25 +21,25 @@ Type=Blur
 
 """
 
+#monoki colors
+# 244,0,95 PINK
+# 152,224,36 GREEN
+# 250,132,25 ORANGE
+# 157,101,255 PURPLE
+# 88,209,235 BLUE
+
+
 variables = """
 
 [variables]
 RECSHAPE = 25,25,400,50,10
 BACKGROUNDCOLOR = 0,0,0,175
-
-
 NORMALCOLOR = "255,255,255,255"
 LITECOLOR = "255,255,255,127"
-;HOVERCOLOR = "166,226,46,255" 
-;GREEN
-;HOVERCOLOR = "244,0,95,255" 
-;PINK
-;HOVERCOLOR = "250,132,25,255" 
-;ORANGE
-;HOVERCOLOR = "157,101,255,255" 
-;PURPLE
 HOVERCOLOR = "88,209,235,255" 
-;BLUR
+
+ACTIVESHAPE="Rectangle 0,0,760,40,20 | Fill Color 88,209,235,50 | StrokeWidth 0 | Stroke Color 0,0,0,0"
+INACTIVESHAPE="Rectangle 0,0,760,40,0 | Fill Color 0,0,0,0 | StrokeWidth 0"
 
 """
 
@@ -48,23 +47,34 @@ metershape = """
 
 [BG{index}]
 Meter=Shape
-Shape=Rectangle 0,0,800,{HEIGHT},10 | Fill Color #BACKGROUNDCOLOR# | StrokeWidth 0
-
+Shape=Rectangle 0,0,800,{HEIGHT},0 | Fill Color #BACKGROUNDCOLOR# | StrokeWidth 0
 
 [RecreateMeter]
+Meter=Shape
+Shape=Rectangle 0,0,50,50,0 | Fill Color 0,0,0,0 | StrokeWidth 0
+Y=0r
+X=750r
+MouseOverAction=[!SetOption RecreateMeterIcon FontColor #HOVERCOLOR#][!UpdateMeter RecreateMeterIcon][!Redraw]
+MouseLeaveAction=[!SetOption RecreateMeterIcon FontColor #LITECOLOR#][!UpdateMeter RecreateMeterIcon][!Redraw]
+LeftMouseUpAction=["{path}"]
+
+[RecreateMeterIcon]
 Meter=String
 FontFace=Hack NF
-FontSize=24
+FontSize=25
 FontColor=#LITECOLOR#
 SolidColor=47,47,47,1
-Padding=6,6,6,6
+Padding=0,0,0,0
 AntiAlias=1
 Y=6r
-X=750r
+X=16r
 Text="\uf021"
-MouseOverAction=[!SetOption RecreateMeter FontColor #HOVERCOLOR#][!UpdateMeter RecreateMeter][!Redraw]
-MouseLeaveAction=[!SetOption RecreateMeter FontColor #LITECOLOR#][!UpdateMeter RecreateMeter][!Redraw]
-LeftMouseUpAction=["{path}"]
+
+[anchor{index}]
+Meter=Shape
+Shape=Rectangle 0,0,10,10,0 | Fill Color 0,0,0,0 | StrokeWidth 0
+X=20
+Y=50
 
 """
 
@@ -104,47 +114,111 @@ LeftMouseUpAction=["{path}"]
 
 
 
-metertext = """
+file_item = """
 
-[MeterText{index}]
-Meter=String
-FontFace=Hack NF
-;FontFace=Comic Sans MS
-FontSize=12
-FontColor=#NORMALCOLOR#
-SolidColor=47,47,47,0
-Padding=10,10,10,10
-AntiAlias=1
-Text="{text}"
-Y={Y}
-X={X}
-MouseOverAction=[!SetOption MeterIcon{index} FontColor #HOVERCOLOR#][!SetOption MeterText{index} FontColor #HOVERCOLOR#][!UpdateMeter MeterIcon{index}][!UpdateMeter MeterText{index}][!Redraw]
-MouseLeaveAction=[!SetOption MeterIcon{index} FontColor #NORMALCOLOR#][!SetOption MeterText{index} FontColor #NORMALCOLOR#][!UpdateMeter MeterIcon{index}][!UpdateMeter MeterText{index}][!Redraw]
+[MeterShape{index}]
+Meter=Shape
+;Shape=Rectangle 0,0,750,40,0 | FillColor 0,0,0,0 | StrokeWidth 0
+Shape=#INACTIVESHAPE#
+Y=0r
+X=0r
+;MouseOverAction=[!SetOption MeterIcon{index} FontColor #HOVERCOLOR#][!SetOption MeterText{index} FontColor #HOVERCOLOR#][!UpdateMeter MeterIcon{index}][!UpdateMeter MeterText{index}][!Redraw]
+;MouseLeaveAction=[!SetOption MeterIcon{index} FontColor #NORMALCOLOR#][!SetOption MeterText{index} FontColor #NORMALCOLOR#][!UpdateMeter MeterIcon{index}][!UpdateMeter MeterText{index}][!Redraw]
+;MouseOverAction=[!SetOption MeterShape{index} Shape #ACTIVESHAPE#][!SetOption MeterIcon{index} FontColor #HOVERCOLOR#][!SetOption MeterText{index} FontColor #HOVERCOLOR#][!UpdateMeter MeterShape{index}][!UpdateMeter MeterIcon{index}][!UpdateMeter MeterText{index}][!Redraw]
+;MouseLeaveAction=[!SetOption MeterShape{index} Shape #INACTIVESHAPE#][!SetOption MeterIcon{index} FontColor #NORMALCOLOR#][!SetOption MeterText{index} FontColor #NORMALCOLOR#][!UpdateMeter MeterShape{index}][!UpdateMeter MeterIcon{index}][!UpdateMeter MeterText{index}][!Redraw]
+MouseOverAction=[!SetOption MeterShape{index} Shape "#ACTIVESHAPE#"][!SetOption MeterString{index} FontColor #HOVERCOLOR#][!SetOption MeterIcon{index} FontColor #HOVERCOLOR#][!UpdateMeter MeterShape{index}][!UpdateMeter MeterString{index}][!UpdateMeter MeterIcon{index}][!Redraw]
+MouseLeaveAction=[!SetOption MeterShape{index} Shape "#INACTIVESHAPE#"][!SetOption MeterIcon{index} FontColor #NORMALCOLOR#][!SetOption MeterString{index} FontColor #NORMALCOLOR#][!UpdateMeter MeterIcon{index}][!UpdateMeter MeterShape{index}][!UpdateMeter MeterString{index}][!Redraw]
+
 LeftMouseUpAction=["{path}"]
-"""
-# ;Y={Y}
-# ;X={X}
 
-# ;FontFace=Comic Sans MS
-#FontFace=Hack NF
 
-metericon = """
 
-[MeterIcon{index}]
+
+[MeterString{index}]
 Meter=String
 FontFace=Hack NF
-FontSize=24
+FontSize=18
+;FontSize=15
+;FontSize=30
 FontColor=#NORMALCOLOR#
 SolidColor=47,47,47,0
 Padding=0,0,0,0
 AntiAlias=1
-Y=0r
-X=-20r
-Text="{icon}"
-MouseOverAction=[!SetOption MeterIcon{index} FontColor #HOVERCOLOR#][!SetOption MeterText{index} FontColor #HOVERCOLOR#][!UpdateMeter MeterIcon{index}][!UpdateMeter MeterText{index}][!Redraw]
-MouseLeaveAction=[!SetOption MeterIcon{index} FontColor #NORMALCOLOR#][!SetOption MeterText{index} FontColor #NORMALCOLOR#][!UpdateMeter MeterIcon{index}][!UpdateMeter MeterText{index}][!Redraw]
-LeftMouseUpAction=["{path}"]
+Y=6r
+X=-10r
+StringAlign=Left
+Text="{textindent}{text}"
+
+[MeterIcon{index}]
+Meter=String
+FontFace=Hack NF
+FontSize=36
+;;FontSize=15
+;;FontSize=30
+FontColor=#NORMALCOLOR#
+SolidColor=47,47,47,0
+Padding=0,0,0,0
+AntiAlias=1
+Y=-16r
+X=-38r
+StringAlign=Left
+Text="{iconindent}{icon}"
+
+[anchor{index}]
+Meter=Shape
+Shape=Rectangle 0,0,10,10,0 | Fill Color 0,0,0,0 | StrokeWidth 0
+Y={Y}
+X=20
+
+
 """
+
+# [MeterString{index}]
+# Meter=String
+# FontFace=Hack NF
+# FontSize=18
+# FontColor=#NORMALCOLOR#
+# SolidColor=47,47,47,0
+# Padding=0,0,0,0
+# AntiAlias=1
+# Y=6r
+# Y=5r
+# Y=-6r
+# X=-24r
+# StringAlign=Left
+# Text="{indent}{icon}  {text}"
+
+# ;MyFillColor = FillColor 0,0,0,0
+# ;MouseOverAction=[!SetOption MeterShape{index} MyFillColor "FillColor 0,0,0,100"][!SetOption MeterIcon{index} FontColor #HOVERCOLOR#][!SetOption MeterText{index} FontColor #HOVERCOLOR#][!UpdateMeter MeterShape{index}][!UpdateMeter MeterIcon{index}][!UpdateMeter MeterText{index}][!Redraw]
+# ;MouseLeaveAction=[!SetOption MeterShape{index} MyFillColor "FillColor 0,0,0,0"][!SetOption MeterIcon{index} FontColor #NORMALCOLOR#][!SetOption MeterText{index} FontColor #NORMALCOLOR#][!UpdateMeter MeterShape{index}][!UpdateMeter MeterIcon{index}][!UpdateMeter MeterText{index}][!Redraw]
+
+
+# [MeterIcon{index}]
+# Meter=String
+# FontFace=Hack NF
+# FontSize=40
+# FontColor=#NORMALCOLOR#
+# SolidColor=47,47,47,0
+# Padding=0,0,0,0
+# AntiAlias=1
+# Y=-12r
+# X=12r
+# StringAlign=Left
+# Text="{icon}"
+
+# [MeterText{index}]
+# Meter=String
+# FontFace=Hack NF
+# FontSize=12
+# FontColor=#NORMALCOLOR#
+# SolidColor=47,47,47,0
+# Padding=0,0,0,0
+# AntiAlias=1
+# Y=20r
+# X=45r
+# StringAlign=Left
+# Text="Desktop"
+
 
 # yshift = 60
 # ytextshift = 40
@@ -175,11 +249,11 @@ icon_map_00 = {
 }
 
 
-def get_text(string):
+def get_text(string,max_length=40):
     result =  string.split('\\')[-1]
 
-    if len(result) > 50:
-        result = result[:40] + '...' + result[-7:]
+    if len(result) > max_length:
+        result = result[:(max_length-10)] + '...' + result[-7:]
 
     return result 
 
@@ -189,9 +263,9 @@ def exclude(text):
     else:
         return False
 
-
 METERNUM = 0 
-def item_factory(t,indent=0):
+
+def item_factory_v3(t,indent=0):
     global METERNUM
     result = []
 
@@ -204,95 +278,40 @@ def item_factory(t,indent=0):
 
         print(text,i['name'],indent)
 
-        mt = metertext.format(
+        fi = file_item.format(
             index=METERNUM,
             Y='{Y}',
-            X= (indent * 50) + 85,
-            text= text,
-            path = i['name']
+            # indent='   '*(indent+1),
+            textindent = '    '*(indent+1),
+            iconindent = '  '*(indent+1),
+            icon=get_icon(text,icon_map_00),
+            text=text,
+            path=i['name']
             )
-        result.append(mt)
+        result.append(fi)
 
-        mi = metericon.format(
-            index=METERNUM,
-            icon= get_icon(text,icon_map_00),
-            path = i['name']
-        )
-
-        result.append(mi)
 
         if 'children' in i.keys():
             METERNUM += 1
-            result += item_factory(i['children'],indent=indent+1)
+            result += item_factory_v3(i['children'],indent=indent+1)
         METERNUM += 1
-        
-    return result
 
-def item_factory_v2(t,indent=0):
-    global METERNUM
-    result = []
-
-    for index,i in enumerate(t):
-        
-        text = get_text(i['name'])
-        # print('x'+text+'x')
-        if exclude(text) == True:
-            continue;
-
-        print(text,i['name'],indent)
-
-        mt = metertext.format(
-            index=METERNUM,
-            Y='{Y}',
-            # X= (indent * 50) + 85,
-            X = 40,
-            text = (('     ' * indent) + get_icon(text,icon_map_00) + ' ' + text + (' '*75))[:75] + '.',
-            path = i['name']
-            )
-        result.append(mt)
-
-        # mi = metericon.format(
-        #     index=METERNUM,
-        #     icon= get_icon(text,icon_map_00),
-        #     path = i['name']
-        # )
-
-        # result.append(mi)
-
-        if 'children' in i.keys():
-            METERNUM += 1
-            result += item_factory_v2(i['children'],indent=indent+1)
-        METERNUM += 1
-        
     return result
 
 
 def main():
-
     rm = rainmeter
     rm += variables
 
     tree = get_tree(r'C:\Users\JGarza\Desktop',sort_all = True)
-    # pp_tree(tree)
-    # print(*tree,sep='\n')
-    # print(i)
 
-    # items = item_factory([tree],indent=0)
-    items = item_factory([tree],indent=0)
-    shape = metershape.format(index=-1,HEIGHT=(20*len(items)) + 40,path=os.path.join(DIR,'refresh.cmd'))
-    # shape = metershape.format(index=-1,HEIGHT='{HEIGHT}')
+    items = item_factory_v3([tree],indent=0)
+    shape = metershape.format(index=-1,HEIGHT=(40*len(items)) + 80,path=os.path.join(DIR,'refresh.cmd'))
     rm += shape
 
-    # items = item_factory([tree],indent=0)
     for index,i in enumerate(items):
-        # print(i)
-        try:
-            rm += i.format(Y=(index*20) + 13)
-        except:
-            rm += i
-    
+        rm += i.format(Y=(40*(index+1)) + 50)
 
-    
     save(rm,os.path.join(DIR,'blacktree.ini'))
 
 
