@@ -13,6 +13,8 @@ Update=1000
 AccurateText=1
 DynamicWindowSize=1
 
+;https://forum.rainmeter.net/viewtopic.php?f=18&t=23106
+;https://github.com/TheAzack9/FrostedGlass
 [FrostedGlass]
 Measure=Plugin
 Plugin=FrostedGlass
@@ -33,13 +35,18 @@ variables = """
 
 [variables]
 RECSHAPE = 25,25,400,50,10
-BACKGROUNDCOLOR = 0,0,0,175
-NORMALCOLOR = "255,255,255,255"
-LITECOLOR = "255,255,255,127"
-HOVERCOLOR = "88,209,235,255" 
+BACKGROUNDCOLOR = 0,0,0,225
+;BACKGROUNDCOLOR = 255,255,255,175
+LITECOLOR = "255,255,255,64"
 
-ACTIVESHAPE="Rectangle 0,0,760,40,20 | Fill Color 88,209,235,50 | StrokeWidth 0 | Stroke Color 0,0,0,0"
-INACTIVESHAPE="Rectangle 0,0,760,40,0 | Fill Color 0,0,0,0 | StrokeWidth 0"
+NORMALCOLOR = "255,255,255,255"
+;NORMALCOLOR = "0,0,0,255"
+;HOVERCOLOR = "88,209,235,255" 
+HOVERCOLOR = "0,0,0,255" 
+
+;ACTIVESHAPE="Rectangle 0,0,780,40,5 | Fill Color 88,209,235,255 | StrokeWidth 0 | Stroke Color 0,0,0,0"
+ACTIVESHAPE="Rectangle 0,0,780,40,10 | Fill Color 152,224,36,255 | StrokeWidth 0 | Stroke Color 0,0,0,0"
+INACTIVESHAPE="Rectangle 0,0,780,40,0 | Fill Color 0,0,0,0 | StrokeWidth 0"
 
 """
 
@@ -47,7 +54,7 @@ metershape = """
 
 [BG{index}]
 Meter=Shape
-Shape=Rectangle 0,0,800,{HEIGHT},0 | Fill Color #BACKGROUNDCOLOR# | StrokeWidth 0
+Shape=Rectangle 0,0,800,{HEIGHT},10 | Fill Color #BACKGROUNDCOLOR# | StrokeWidth 0
 
 [RecreateMeter]
 Meter=Shape
@@ -73,7 +80,7 @@ Text="\uf021"
 [anchor{index}]
 Meter=Shape
 Shape=Rectangle 0,0,10,10,0 | Fill Color 0,0,0,0 | StrokeWidth 0
-X=20
+X=10
 Y=50
 
 """
@@ -118,7 +125,7 @@ file_item = """
 
 [MeterShape{index}]
 Meter=Shape
-;Shape=Rectangle 0,0,750,40,0 | FillColor 0,0,0,0 | StrokeWidth 0
+;Shape=Rectangle 0,0,750,60,0 | FillColor 0,0,0,0 | StrokeWidth 0
 Shape=#INACTIVESHAPE#
 Y=0r
 X=0r
@@ -168,7 +175,7 @@ Text="{iconindent}{icon}"
 Meter=Shape
 Shape=Rectangle 0,0,10,10,0 | Fill Color 0,0,0,0 | StrokeWidth 0
 Y={Y}
-X=20
+X=10
 
 
 """
@@ -306,11 +313,11 @@ def main():
     tree = get_tree(r'C:\Users\JGarza\Desktop',sort_all = True)
 
     items = item_factory_v3([tree],indent=0)
-    shape = metershape.format(index=-1,HEIGHT=(40*len(items)) + 80,path=os.path.join(DIR,'refresh.cmd'))
+    shape = metershape.format(index=-1,HEIGHT=(60*len(items)) + 80,path=os.path.join(DIR,'refresh_minimized'))
     rm += shape
 
     for index,i in enumerate(items):
-        rm += i.format(Y=(40*(index+1)) + 50)
+        rm += i.format(Y=(60*(index+1)) + 50)
 
     save(rm,os.path.join(DIR,'blacktree.ini'))
 
