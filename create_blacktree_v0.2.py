@@ -35,8 +35,8 @@ variables = """
 
 [variables]
 RECSHAPE = 25,25,400,50,10
-BACKGROUNDCOLOR = 0,0,0,225
-;BACKGROUNDCOLOR = 255,255,255,175
+;BACKGROUNDCOLOR = 0,0,0,225
+BACKGROUNDCOLOR = 0,0,0,100
 LITECOLOR = "255,255,255,64"
 
 NORMALCOLOR = "255,255,255,255"
@@ -44,8 +44,8 @@ NORMALCOLOR = "255,255,255,255"
 ;HOVERCOLOR = "88,209,235,255" 
 HOVERCOLOR = "0,0,0,255" 
 
-;ACTIVESHAPE="Rectangle 0,0,780,40,5 | Fill Color 88,209,235,255 | StrokeWidth 0 | Stroke Color 0,0,0,0"
-ACTIVESHAPE="Rectangle 0,0,780,40,10 | Fill Color 152,224,36,255 | StrokeWidth 0 | Stroke Color 0,0,0,0"
+ACTIVESHAPE="Rectangle 0,0,780,40,5 | Fill Color 88,209,235,255 | StrokeWidth 0 | Stroke Color 0,0,0,0"
+;ACTIVESHAPE="Rectangle 0,0,780,40,10 | Fill Color 152,224,36,255 | StrokeWidth 0 | Stroke Color 0,0,0,0"
 INACTIVESHAPE="Rectangle 0,0,780,40,0 | Fill Color 0,0,0,0 | StrokeWidth 0"
 
 """
@@ -54,7 +54,7 @@ metershape = """
 
 [BG{index}]
 Meter=Shape
-Shape=Rectangle 0,0,800,{HEIGHT},10 | Fill Color #BACKGROUNDCOLOR# | StrokeWidth 0
+Shape=Rectangle 0,0,800,{HEIGHT},0 | Fill Color #BACKGROUNDCOLOR# | StrokeWidth 0
 
 [RecreateMeter]
 Meter=Shape
@@ -278,7 +278,7 @@ def item_factory_v3(t,indent=0):
 
     for index,i in enumerate(t):
         
-        text = get_text(i['name'])
+        text = get_text(i['name'],max_length=40)
         # print('x'+text+'x')
         if exclude(text) == True:
             continue;
